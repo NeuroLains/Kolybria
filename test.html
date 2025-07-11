@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Тест отправки письма</title>
+</head>
+<body>
+    <button onclick="sendTestEmail()">Отправить тестовое письмо</button>
+    <div id="result"></div>
+
+    <script>
+        async function sendTestEmail() {
+            try {
+                const response = await fetch('http://localhost:3001/api/test-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('result').textContent = 'Ошибка: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html> 
