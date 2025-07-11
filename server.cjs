@@ -27,16 +27,16 @@ app.get('/api/test-email', async (req, res) => {
       port: 465,
       secure: true,
       auth: {
-        user: process.env.SMTP_USER, // из .env
-        pass: process.env.SMTP_PASS  // из .env
+        user: 'eis-admin@bk.ru',
+        pass: '2Eya898BN4ulYKRKdMkg'
       },
       debug: true,
       logger: true
     });
     await transporter.verify();
     const mailOptions = {
-      from: process.env.SMTP_USER,
-      to: process.env.SMTP_USER,
+      from: 'eis-admin@bk.ru',
+      to: 'eis-admin@bk.ru',
       subject: 'Тестовое письмо с сайта типографии',
       text: 'Это тестовое письмо для проверки работы почтового сервера.',
       html: `
@@ -69,8 +69,8 @@ app.post('/api/quick-order', upload.any(), async (req, res) => {
       port: 465,
       secure: true,
       auth: {
-        user: process.env.SMTP_USER, // из .env
-        pass: process.env.SMTP_PASS  // из .env
+        user: 'eis-admin@bk.ru',
+        pass: '2Eya898BN4ulYKRKdMkg'
       },
       debug: true,
       logger: true,
@@ -84,8 +84,8 @@ app.post('/api/quick-order', upload.any(), async (req, res) => {
 
     // Формируем письмо
     const mailOptions = {
-      from: process.env.SMTP_USER,
-      to: process.env.SMTP_USER,
+      from: 'eis-admin@bk.ru',
+      to: 'eis-admin@bk.ru',
       subject: service ? `Заказ: ${service}` : 'Новый заказ с сайта типографии',
       text: `Имя: ${name}\nТелефон: ${phone}\nEmail: ${email}\nСообщение: ${message}${comment ? '\nКомментарий: ' + comment : ''}${service ? '\nУслуга: ' + service : ''}`,
       html: `
