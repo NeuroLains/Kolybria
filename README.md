@@ -21,8 +21,6 @@ node server.cjs
 npm run dev
 ```
 
-### 4. Настройка почты
-- Создайте файл `.env` на основе `.env.example` и укажите свои SMTP-данные.
 
 ## Структура проекта
 - `server.cjs` — backend (Express + Nodemailer)
@@ -30,5 +28,3 @@ npm run dev
 - `public/` — публичные ассеты
 - `uploads/` — загружаемые пользователями файлы (игнорируется в git)
 
-## Пример .env
-См. файл `.env.example` 
