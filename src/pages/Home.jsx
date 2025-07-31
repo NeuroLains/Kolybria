@@ -50,6 +50,7 @@ import work14 from '../assets/gallery/14.jpg';
 import photo1 from '../assets/gallery/photo1.jpg';
 import photo2 from '../assets/gallery/photo2.jpg';
 import photo3 from '../assets/gallery/photo3.jpg';
+import mainBg from '../../123/main.jpg';
 
 const services = [
   { title: 'Визитки', price: 95, oldPrice: 120, discount: 21, icon: CardIcon, image: photo1, rating: 4.9, reviews: 120 },
@@ -249,16 +250,9 @@ export default function Home() {
 
   return (
     <>
-      <div className="slider-hero">
-        <div className="slider-hero-bg">
-          <img src={sliderContent[autoIndex].image} alt="Слайд" className="slider-hero-img" />
-        </div>
-        <div className="slider-hero-content">
-          <h1 className="slider-hero-title">{sliderContent[autoIndex].title}</h1>
-          <div className="slider-hero-sub">{sliderContent[autoIndex].price}</div>
-          <button className="main-btn slider-hero-btn">Рассчитать стоимость</button>
-        </div>
-      </div>
+      {/* Удалено: <div className="home-bg-wrapper"><div className="home-bg-image" ... /> ... */}
+      {/* Удалено: <div className="slider-hero"> ... </div> */}
+      {/* ...оставшийся JSX главной страницы... */}
       <div style={{ padding: '32px 0', textAlign: 'center' }}>
         <h2 className="section-title">Хиты продаж</h2>
         <div className="products-grid">

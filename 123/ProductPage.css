@@ -1,61 +1,13 @@
-.product-page-bg-wrapper {
-  position: relative;
-  min-height: 100vh;
-}
-
-.product-page-bg-image {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: blur(3px) brightness(0.6);
-  opacity: 0.35;
-  z-index: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-.home-bg-wrapper {
-  position: relative;
-  min-height: 100vh;
-}
-
-.home-bg-image {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: blur(2px) brightness(0.7);
-  opacity: 0.28;
-  z-index: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-.home-bg-wrapper > *:not(.home-bg-image) {
-  position: relative;
-  z-index: 1;
-}
-
 .product-page-container {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 15px;
+  padding: 0 15px;
   max-width: 1400px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: flex-start;
+  min-height: auto;
   box-sizing: border-box;
-  padding: 0 15px;
 }
 
 @media (max-width: 900px) {
@@ -1498,83 +1450,4 @@
 
 .self-copy-page .price-table-container.compact-margin-top {
     margin-top: 0px;
-}
-
-/* --- ОПЦИИ: компактное расположение --- */
-.option-group {
-  margin-bottom: 10px !important;
-  padding-bottom: 0;
-}
-.option-choices {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 0;
-}
-/* Для inline-опций (если есть класс или data-атрибут) */
-.option-group[layout='inline'] .option-choices,
-.option-group.inline .option-choices {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.quantity-input {
-  margin-right: 8px;
-  min-width: 70px;
-  max-width: 100px;
-}
-
-/* --- ГАЛЕРЕЯ: обрезка картинок по рамке --- */
-.product-main-image,
-.fixed-gallery-image {
-  object-fit: cover !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  display: block;
-}
-.product-thumbnail {
-  object-fit: cover !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  display: block;
-}
-
-/* --- Сделать таблицы с ценами шире --- */
-.price-table,
-.product-table {
-  min-width: 100% !important;
-  max-width: 100% !important;
-  width: 100% !important;
-  table-layout: auto;
-}
-.price-table-container,
-.product-options-section .option-group .price-table-container {
-  min-width: 100% !important;
-  max-width: 100% !important;
-  width: 100% !important;
-  overflow-x: auto;
-  padding: 0 8px 12px 8px;
-  box-sizing: border-box;
-}
-
-/* Для мобильных — пусть будет скролл */
-@media (max-width: 900px) {
-  .price-table-container,
-  .product-options-section .option-group .price-table-container {
-    overflow-x: auto;
-    min-width: 600px;
-    max-width: 100vw;
-  }
 }

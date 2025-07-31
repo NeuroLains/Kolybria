@@ -5,7 +5,6 @@ import ProductGallery from '../components/ProductGallery'; // Импортиру
 import { products, stubImage } from '../data/products';
 import './ProductPage.css'; // Импортируем CSS файл
 import '../components/StickerCalculator.css'; // Импортируем CSS для калькулятора наклеек
-import { getMainImage, hasImages } from '../utils/imageLoader';
 
 // Новый компонент для калькулятора наклеек
 function StickerCalculator({
@@ -472,16 +471,7 @@ export default function ProductPage() {
               initialOptions[optionGroup.name] = null;
             }
           } else if (Array.isArray(optionGroup.choices) && optionGroup.choices.length > 0) {
-            // Специальная инициализация для футболок
-            if (product.id === 20 && optionGroup.name === 'Синтетика + хлопок') {
-              initialOptions[optionGroup.name] = 'two_layer_white'; // Выбираем по умолчанию
-            } else if (product.id === 20 && optionGroup.name === 'Размер принта') {
-              initialOptions[optionGroup.name] = 'a4'; // А4 по умолчанию
-            } else if (product.id === 20 && optionGroup.name === 'Печать на второй стороне') {
-              initialOptions[optionGroup.name] = 'none'; // Нет по умолчанию
-            } else {
-              initialOptions[optionGroup.name] = null;
-            }
+            initialOptions[optionGroup.name] = null;
           }
         } else if (optionGroup.type === 'color-picker') {
           if (queryValue) {
@@ -580,15 +570,6 @@ export default function ProductPage() {
         }
       } else {
         newOptions[optionGroupName] = value;
-        
-        // Специальная логика для футболок - сброс выбора из другой группы материалов
-        if (product.id === 20 && ['Синтетика + хлопок', 'Цветной хлопок'].includes(optionGroupName)) {
-          if (optionGroupName === 'Синтетика + хлопок') {
-            newOptions['Цветной хлопок'] = null;
-          } else if (optionGroupName === 'Цветной хлопок') {
-            newOptions['Синтетика + хлопок'] = null;
-          }
-        }
       }
 
       return newOptions;
@@ -650,9 +631,6 @@ export default function ProductPage() {
       }
 
       let basePricePerSticker = areaSqM * pricePerSqMeter;
-      
-      // Округляем до 2 знаков после запятой для избежания лишних нулей
-      basePricePerSticker = Math.round(basePricePerSticker /10 ) / 100;
 
       product.options.forEach(optionGroup => {
         if (optionGroup.name === 'Материал' || optionGroup.name === 'Ламинация') {
@@ -667,116 +645,6 @@ export default function ProductPage() {
       const discountPercentage = getDiscountForQuantity(quantity);
 
       currentPriceValue = (basePricePerSticker * quantity) * (1 - discountPercentage);
-
-      console.log('3D стикеры - расчет:', {
-        areaSqM,
-        pricePerSqMeter,
-        basePricePerSticker,
-        quantity,
-        discountPercentage,
-        currentPriceValue
-      });
-
-      return currentPriceValue;
-
-    } else if (product.id === 20) {
-      // Специальная логика для футболок (id: 20)
-      const syntheticMaterialOption = selectedOptions['Синтетика + хлопок'];
-      const cottonMaterialOption = selectedOptions['Цветной хлопок'];
-      const quantityOption = selectedOptions['Количество'];
-      const sizeOption = selectedOptions['Размер футболки'];
-      const printSizeOption = selectedOptions['Размер принта'];
-      const doubleSidedOption = selectedOptions['Печать на второй стороне'];
-      
-      // Определяем выбранный материал
-      const materialOption = syntheticMaterialOption || cottonMaterialOption;
-      
-      if (!materialOption || !quantityOption) {
-        return currentPriceValue;
-      }
-
-      currentEffectiveQuantity = quantityOption;
-      
-      let basePrice = 0;
-      let baseMaterial = materialOption;
-      let isColor = false;
-      let isEvo = false;
-      let isCotton230 = false;
-      let isContract = false;
-
-      // Двуслойная/Сэндвич (белый)
-      if (baseMaterial === 'two_layer_white' || baseMaterial === 'evo_white') {
-        if (quantityOption === 1) basePrice = 800;
-        else if (quantityOption > 1 && quantityOption <= 5) basePrice = 700;
-        else if (quantityOption > 5 && quantityOption <= 10) basePrice = 650;
-        else if (quantityOption > 10 && quantityOption <= 30) basePrice = 600;
-        else if (quantityOption > 30 && quantityOption <= 50) basePrice = 550;
-        else if (quantityOption > 50 && quantityOption <= 100) basePrice = 500;
-        else if (quantityOption > 100) basePrice = 480;
-        if (baseMaterial === 'evo_white') {
-          basePrice += 85;
-          isEvo = true;
-        }
-      } else if (baseMaterial === 'cotton_165' || baseMaterial === 'cotton_230') {
-        isColor = true;
-        if (quantityOption === 1) basePrice = 1800;
-        else if (quantityOption > 1 && quantityOption <= 5) basePrice = 1700;
-        else if (quantityOption > 5 && quantityOption <= 10) basePrice = 1600;
-        else if (quantityOption > 10 && quantityOption <= 20) basePrice = 1300;
-        else if (quantityOption > 20) {
-          isContract = true;
-        }
-        if (baseMaterial === 'cotton_230') {
-          basePrice += 600;
-          isCotton230 = true;
-        }
-      }
-
-      if (isContract) {
-        return 'Договорная';
-      }
-
-      console.log('Футболки - расчет базовой цены:', {
-        baseMaterial,
-        quantityOption,
-        basePrice,
-        isEvo,
-        isColor,
-        isCotton230
-      });
-
-      currentPriceValue = basePrice * quantityOption;
-
-      // Доплата за А3 печать
-      if (printSizeOption === 'a3') {
-        if (isColor) {
-          currentPriceValue += 250 * quantityOption;
-        } else {
-          currentPriceValue += 100 * quantityOption;
-        }
-      }
-
-      // Доплата за печать на второй стороне
-      if (doubleSidedOption && doubleSidedOption !== 'none') {
-        if (doubleSidedOption === 'double_sided_a4') {
-          if (isColor) {
-            currentPriceValue += 250 * quantityOption;
-          } else {
-            currentPriceValue += 100 * quantityOption;
-          }
-        } else if (doubleSidedOption === 'double_sided_a3') {
-          if (isColor) {
-            currentPriceValue += 250 * quantityOption;
-          } else {
-            currentPriceValue += 200 * quantityOption;
-          }
-        }
-      }
-
-      // Доплата за размер выше 54
-      if (sizeOption && sizeOption > 54) {
-        currentPriceValue += 85 * quantityOption;
-      }
 
       return currentPriceValue;
 
@@ -967,188 +835,179 @@ export default function ProductPage() {
 
   const prefilledDescription = generatePrefilledDescription();
 
-  const mainBgImage = hasImages(product.id) ? getMainImage(product.id) : null;
-
   return (
-    <div className="product-page-bg-wrapper">
-      {mainBgImage && (
-        <div
-          className="product-page-bg-image"
-          style={{ backgroundImage: `url(${mainBgImage})` }}
-        />
-      )}
-      <div className={`product-page-container ${product.id === 16 ? 'self-copy-page' : ''}`}>
-        {/* Левая колонка - Карусель изображений */}
-        <ProductGallery 
-          productId={product.id}
-          fallbackImage={product.image}
-          productName={product.name || product.title}
-        />
+    <div className={`product-page-container ${product.id === 16 ? 'self-copy-page' : ''}`}>
+      {/* Левая колонка - Карусель изображений */}
+      <ProductGallery 
+        productId={product.id}
+        fallbackImage={product.image}
+        productName={product.name || product.title}
+      />
 
-        {/* Правая колонка - Информация о продукте и опции */}
-        <div className="product-details-column">
-          <h1 className="product-title">{product.name || product.title}</h1>
+      {/* Правая колонка - Информация о продукте и опции */}
+      <div className="product-details-column">
+        <h1 className="product-title">{product.name || product.title}</h1>
 
-          <p className="product-description">{product.description}</p>
+        <p className="product-description">{product.description}</p>
 
-          {/* Блок опций */}
-          <div className="product-options-section">
-            {product.id === 11 ? (
-              <StickerCalculator 
-                product={product}
-                selectedOptions={selectedOptions}
-                handleOptionChange={handleOptionChange}
-                generatePriceTableData={generatePriceTableData}
-                setTooltip={setTooltip}
-                tooltip={tooltip}
-              />
-            ) : (
-              product.options.map((optionGroup, groupIndex) => {
-              if (optionGroup.type === 'product-table') {
-                const selectedTableCell = selectedOptions[optionGroup.name];
-                  const tableClassName = product.id === 16 ? 'product-table compact-quantities' : 'product-table';
-                const shouldRenderTitle = !(['Нумерация', 'Склейка'].includes(optionGroup.name) && product.id === 16);
-                const shouldApplyCompactMargin = product.id === 16 && (optionGroup.name === 'Нумерация' || optionGroup.name === 'Склейка');
-                const priceTableContainerClassName = `price-table-container ${shouldApplyCompactMargin ? 'compact-margin-top' : ''}`;
+        {/* Блок опций */}
+        <div className="product-options-section">
+          {product.id === 11 ? (
+            <StickerCalculator 
+              product={product}
+              selectedOptions={selectedOptions}
+              handleOptionChange={handleOptionChange}
+              generatePriceTableData={generatePriceTableData}
+              setTooltip={setTooltip}
+              tooltip={tooltip}
+            />
+          ) : (
+            product.options.map((optionGroup, groupIndex) => {
+            if (optionGroup.type === 'product-table') {
+              const selectedTableCell = selectedOptions[optionGroup.name];
+                const tableClassName = product.id === 16 ? 'product-table compact-quantities' : 'product-table';
+              const shouldRenderTitle = !(['Нумерация', 'Склейка'].includes(optionGroup.name) && product.id === 16);
+              const shouldApplyCompactMargin = product.id === 16 && (optionGroup.name === 'Нумерация' || optionGroup.name === 'Склейка');
+              const priceTableContainerClassName = `price-table-container ${shouldApplyCompactMargin ? 'compact-margin-top' : ''}`;
 
-                return (
-                  <div key={groupIndex} className="option-group">
-                    {shouldRenderTitle && (
-                      <h4 className="option-group-name">{optionGroup.name}:</h4>
-                    )}
-                    <div className={priceTableContainerClassName}>
-                      <table className={tableClassName}>
-                        <thead>
-                          <tr>
-                            <th></th>
-                            {optionGroup.tableData.quantities.map((quantity, index) => (
-                              <th key={index}>{quantity} шт.</th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {optionGroup.tableData.rows.map((row, rowIndex) => {
-                            let rowClass = '';
-                            if (product.id === 16) {
-                              if (rowIndex >= 0 && rowIndex <= 2) {
-                                rowClass = 'format-group-a4';
-                              } else if (rowIndex === 3) {
-                                rowClass = 'format-group-a4-third';
-                              } else if (rowIndex >= 4 && rowIndex <= 6) {
-                                rowClass = 'format-group-a5';
-                              } else if (rowIndex >= 7 && rowIndex <= 9) {
-                                rowClass = 'format-group-a6';
-                              }
-                            }
-
-                            return (
-                              <tr key={rowIndex} className={rowClass}>
-                                <td
-                                  className="table-row-name"
-                                  onMouseEnter={(e) => setTooltip({ visible: true, content: row.name, x: e.clientX, y: e.clientY })}
-                                  onMouseLeave={() => setTooltip({ visible: false, content: '', x: 0, y: 0 })}
-                                >
-                                  <span className="table-row-name-span">
-                                    {row.image && <img src={row.image} alt={row.displayRowName || row.name} className="option-thumbnail" />}
-                                    {row.displayRowName || row.name}
-                                  </span>
-                                </td>
-                                {optionGroup.tableData.quantities.map((quantity, colIndex) => {
-                                  // Защита: если нет значения, рендерим пустую ячейку
-                                  const price = row.prices?.[colIndex] ?? null;
-                                  const isUnavailable = price === null || price === undefined;
-                                  const isSelected = selectedTableCell && 
-                                    selectedTableCell.rowIndex === rowIndex && 
-                                    selectedTableCell.colIndex === colIndex;
-                                  
-                                  return (
-                                    <td key={colIndex} className={isSelected ? 'selected-cell' : ''}>
-                                      {!isUnavailable && (
-                                        <div 
-                                          className={`price-cell ${isSelected ? 'selected' : ''}`}
-                                          onClick={() => handleOptionChange(optionGroup.name, { price, quantity: optionGroup.tableData.quantities[colIndex], label: row.name, rowIndex, colIndex })}
-                                          onMouseEnter={(e) => price !== null && setTooltip({ visible: true, content: `Цена: ${product.id === 18 || product.id === 19 ? (price / optionGroup.tableData.quantities[colIndex]).toFixed(2) : price.toFixed(2)}р`, x: e.clientX, y: e.clientY })}
-                                          onMouseLeave={() => setTooltip({ visible: false, content: '', x: 0, y: 0 })}
-                                        >
-                                          {product.id === 17 ? 
-                                                `${price.toFixed(2)}р` :
-                                                product.id === 18 || product.id === 19 ?
-                                                `${(price / optionGroup.tableData.quantities[colIndex]).toFixed(2)}р` :
-                                                `${price.toFixed(2)}р`}
-                                        </div>
-                                      )}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                );
-              } else if (optionGroup.type === 'checkbox') {
-                const selectedTableOption = selectedOptions['Тип бумаги и тираж'];
-                const isCardboardSelected = selectedTableOption && 
-                  selectedTableOption.label && 
-                  selectedTableOption.label.includes('Картон 300 гр + лак');
-
-                return (
-                  <div key={groupIndex} className="option-group">
+              return (
+                <div key={groupIndex} className="option-group">
+                  {shouldRenderTitle && (
                     <h4 className="option-group-name">{optionGroup.name}:</h4>
-                      <div className="checkbox-options-grid">
-                        {optionGroup.choices.map((choice, choiceIndex) => {
-                          const isChecked = Array.isArray(selectedOptions[optionGroup.name]) &&
-                                            selectedOptions[optionGroup.name].includes(choice.value);
-                          let isDisabled = isCardboardSelected;
-
-                          if (product.id === 4 && optionGroup.name === 'Дополнительные опции') {
-                            const selectedFormatOption = selectedOptions['Формат и тираж'];
-                            if (selectedFormatOption) {
-                              const selectedFormatName = selectedFormatOption.label;
-                              if (selectedFormatName.includes('А5') && choice.value.includes('a6')) {
-                                isDisabled = true;
-                              }
-                              if (selectedFormatName.includes('А6') && choice.value.includes('a5')) {
-                                isDisabled = true;
-                              }
-                            } else {
-                              isDisabled = true;
+                  )}
+                  <div className={priceTableContainerClassName}>
+                    <table className={tableClassName}>
+                      <thead>
+                        <tr>
+                          <th></th>
+                          {optionGroup.tableData.quantities.map((quantity, index) => (
+                            <th key={index}>{quantity} шт.</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {optionGroup.tableData.rows.map((row, rowIndex) => {
+                          let rowClass = '';
+                          if (product.id === 16) {
+                            if (rowIndex >= 0 && rowIndex <= 2) {
+                              rowClass = 'format-group-a4';
+                            } else if (rowIndex === 3) {
+                              rowClass = 'format-group-a4-third';
+                            } else if (rowIndex >= 4 && rowIndex <= 6) {
+                              rowClass = 'format-group-a5';
+                            } else if (rowIndex >= 7 && rowIndex <= 9) {
+                              rowClass = 'format-group-a6';
                             }
                           }
 
                           return (
-                            <label
-                          key={choiceIndex}
-                              className={`checkbox-label ${isDisabled ? 'disabled' : ''}`}
-                              onMouseEnter={(e) => {
-                                if (isDisabled) {
-                                  setTooltip({ visible: true, content: 'Сначала выберите соответствующий формат А5 или А6.', x: e.clientX, y: e.clientY });
-                                }
-                              }}
-                              onMouseLeave={() => setTooltip({ visible: false, content: '', x: 0, y: 0 })}
-                            >
-                              <input
-                                type="checkbox"
-                                value={choice.value}
-                                checked={isChecked}
-                                onChange={() => handleOptionChange(optionGroup.name, choice.value)}
-                                disabled={isDisabled}
-                              />
-                          {choice.image && <img src={choice.image} alt={choice.label} className="option-thumbnail" />}
-                          {choice.label}
-                            </label>
+                            <tr key={rowIndex} className={rowClass}>
+                              <td
+                                className="table-row-name"
+                                onMouseEnter={(e) => setTooltip({ visible: true, content: row.name, x: e.clientX, y: e.clientY })}
+                                onMouseLeave={() => setTooltip({ visible: false, content: '', x: 0, y: 0 })}
+                              >
+                                <span className="table-row-name-span">
+                                  {row.image && <img src={row.image} alt={row.displayRowName || row.name} className="option-thumbnail" />}
+                                  {row.displayRowName || row.name}
+                                </span>
+                              </td>
+                              {optionGroup.tableData.quantities.map((quantity, colIndex) => {
+                                // Защита: если нет значения, рендерим пустую ячейку
+                                const price = row.prices?.[colIndex] ?? null;
+                                const isUnavailable = price === null || price === undefined;
+                                const isSelected = selectedTableCell && 
+                                  selectedTableCell.rowIndex === rowIndex && 
+                                  selectedTableCell.colIndex === colIndex;
+                                
+                                return (
+                                  <td key={colIndex} className={isSelected ? 'selected-cell' : ''}>
+                                    {!isUnavailable && (
+                                      <div 
+                                        className={`price-cell ${isSelected ? 'selected' : ''}`}
+                                        onClick={() => handleOptionChange(optionGroup.name, { price, quantity: optionGroup.tableData.quantities[colIndex], label: row.name, rowIndex, colIndex })}
+                                        onMouseEnter={(e) => price !== null && setTooltip({ visible: true, content: `Цена: ${product.id === 18 || product.id === 19 ? (price / optionGroup.tableData.quantities[colIndex]).toFixed(2) : price.toFixed(2)}р`, x: e.clientX, y: e.clientY })}
+                                        onMouseLeave={() => setTooltip({ visible: false, content: '', x: 0, y: 0 })}
+                                      >
+                                        {product.id === 17 ? 
+                                              `${price.toFixed(2)}р` :
+                                              product.id === 18 || product.id === 19 ?
+                                              `${(price / optionGroup.tableData.quantities[colIndex]).toFixed(2)}р` :
+                                              `${price.toFixed(2)}р`}
+                                      </div>
+                                    )}
+                                  </td>
+                                );
+                              })}
+                            </tr>
                           );
                         })}
-                    </div>
+                      </tbody>
+                    </table>
                   </div>
-                );
-              } else if (optionGroup.type === 'quantity-input') {
-                const currentValue = selectedOptions[optionGroup.name] || optionGroup.initialValue || 1;
-                return (
-                  <div key={groupIndex} className="option-group">
-                    <h4 className="option-group-name">{optionGroup.name}:</h4>
+                </div>
+              );
+            } else if (optionGroup.type === 'checkbox') {
+              const selectedTableOption = selectedOptions['Тип бумаги и тираж'];
+              const isCardboardSelected = selectedTableOption && 
+                selectedTableOption.label && 
+                selectedTableOption.label.includes('Картон 300 гр + лак');
+
+              return (
+                <div key={groupIndex} className="option-group">
+                  <h4 className="option-group-name">{optionGroup.name}:</h4>
+                    <div className="checkbox-options-grid">
+                      {optionGroup.choices.map((choice, choiceIndex) => {
+                        const isChecked = Array.isArray(selectedOptions[optionGroup.name]) &&
+                                          selectedOptions[optionGroup.name].includes(choice.value);
+                        let isDisabled = isCardboardSelected;
+
+                        if (product.id === 4 && optionGroup.name === 'Дополнительные опции') {
+                          const selectedFormatOption = selectedOptions['Формат и тираж'];
+                          if (selectedFormatOption) {
+                            const selectedFormatName = selectedFormatOption.label;
+                            if (selectedFormatName.includes('А5') && choice.value.includes('a6')) {
+                              isDisabled = true;
+                            }
+                            if (selectedFormatName.includes('А6') && choice.value.includes('a5')) {
+                              isDisabled = true;
+                            }
+                          } else {
+                            isDisabled = true;
+                          }
+                        }
+
+                        return (
+                          <label
+                        key={choiceIndex}
+                            className={`checkbox-label ${isDisabled ? 'disabled' : ''}`}
+                            onMouseEnter={(e) => {
+                              if (isDisabled) {
+                                setTooltip({ visible: true, content: 'Сначала выберите соответствующий формат А5 или А6.', x: e.clientX, y: e.clientY });
+                              }
+                            }}
+                            onMouseLeave={() => setTooltip({ visible: false, content: '', x: 0, y: 0 })}
+                          >
+                            <input
+                              type="checkbox"
+                              value={choice.value}
+                              checked={isChecked}
+                              onChange={() => handleOptionChange(optionGroup.name, choice.value)}
+                              disabled={isDisabled}
+                            />
+                        {choice.image && <img src={choice.image} alt={choice.label} className="option-thumbnail" />}
+                        {choice.label}
+                          </label>
+                        );
+                      })}
+                  </div>
+                </div>
+              );
+            } else if (optionGroup.type === 'quantity-input') {
+              const currentValue = selectedOptions[optionGroup.name] || optionGroup.initialValue || 1;
+              return (
+                <div key={groupIndex} className="option-group">
+                  <h4 className="option-group-name">{optionGroup.name}:</h4>
                   <input
                     type="number"
                         min={optionGroup.min || 1}
@@ -1216,9 +1075,6 @@ export default function ProductPage() {
                 return null;
               }
             } else {
-              // Специальная логика для футболок - убираем блокировку, оставляем только сброс выбора
-              let isDisabled = false;
-
               return (
                 <div key={groupIndex} className="option-group">
                   <h4 className="option-group-name">{optionGroup.name}:</h4>
@@ -1229,8 +1085,6 @@ export default function ProductPage() {
                         key={choiceIndex}
                         className={`option-button ${selectedOptions[optionGroup.name] === choice.value ? 'active' : ''}`}
                         onClick={() => handleOptionChange(optionGroup.name, choice.value)}
-                        onMouseEnter={(e) => choice.description && setTooltip({ visible: true, content: choice.description, x: e.clientX, y: e.clientY })}
-                        onMouseLeave={() => setTooltip({ visible: false, content: '', x: 0, y: 0 })}
                       >
                         {choice.image && <img src={choice.image} alt={choice.label} className="option-thumbnail" />}
                         {choice.label}
@@ -1247,11 +1101,7 @@ export default function ProductPage() {
 
         {/* Блок "Заказать" */}
         <div className="product-actions">
-          {product.id === 6 ? (
-            <div className="total-price">от 240 ₽</div>
-          ) : (
-            <div className="total-price">{currentPrice} ₽</div>
-          )}
+          <div className="total-price">{currentPrice} ₽</div>
           <button className="order-button" onClick={openModal}>Заказать</button>
         </div>
       </div>
@@ -1273,7 +1123,6 @@ export default function ProductPage() {
           {tooltip.content}
         </div>
       )}
-    </div>
     </div>
   );
 }

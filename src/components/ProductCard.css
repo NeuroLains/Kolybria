@@ -1,7 +1,7 @@
 .product-card {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: rgba(255,255,255,0.75); /* Было #fff, теперь полупрозрачный */
   border-radius: 16px;
   box-shadow: 0 2px 12px #1976d211;
   text-decoration: none;
@@ -10,16 +10,36 @@
   overflow: hidden;
   cursor: pointer;
   will-change: transform;
+  position: relative; /* Добавляем для позиционирования фонового изображения */
 }
 .product-card:hover {
   transform: translateY(-4px);
 }
+
+/* Размытое фоновое изображение */
+.product-card-bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(8px) brightness(0.7);
+  opacity: 0.3;
+  z-index: 0;
+  transform: scale(1.1); /* Немного увеличиваем чтобы избежать белых краев при размытии */
+  transition: opacity 0.3s ease-in-out; /* Плавная анимация появления */
+}
+
 .product-card-img-wrap {
   position: relative;
   width: 100%;
   padding-top: 75%; /* Aspect ratio 4:3 */
   background: #f5faff;
   overflow: hidden;
+  z-index: 1; /* Поверх фонового изображения */
 }
 .product-card-img {
   position: absolute;
@@ -53,6 +73,8 @@
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1; /* Allow content to fill space */
+  position: relative;
+  z-index: 1; /* Поверх фонового изображения */
 }
 .product-card-title {
   font-size: 1.05rem;

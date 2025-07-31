@@ -197,11 +197,9 @@ export const products = [
     name: 'Брошюры',
     image: hasImages(6) ? getMainImage(6) : brochureImg,
     carouselImages: hasImages(6) ? [getMainImage(6), ...getGalleryImages(6)] : [brochureImg, brochureImg],
-    description: 'Брошюры для акций, рекламы, событий. Ярко, быстро, недорого. от 1.4 ₽ за шт.',
-    basePrice: 140,
-    options: [
-      { name: 'Плотность бумаги', type: 'radio', choices: [{ label: '130г', value: '130', priceModifier: 0 }, { label: '170г', value: '170', priceModifier: 50 }] }
-    ]
+    description: 'Печать брошюр, методических пособий, презентаций, каталогов, журналов. Цена рассчитывается индивидуально, так как зависит от формата, количества листов, типа бумаги, способа скрепления и других нюансов.',
+    basePrice: 240,
+    options: []
   },
   {
     id: 7,
@@ -599,10 +597,87 @@ export const products = [
     name: 'Футболки',
     image: hasImages(20) ? getMainImage(20) : tshirtImg,
     carouselImages: hasImages(20) ? [getMainImage(20), ...getGalleryImages(20)] : [tshirtImg, tshirtImg],
-    description: 'Печать на футболках с вашим дизайном. Разные размеры и цвета. от 60.0 ₽ за шт.',
-    basePrice: 600,
+    description: 'Печать на футболках с вашим дизайном. Разные размеры и цвета.',
+    basePrice: 0,
     options: [
-      { name: 'Размер', type: 'radio', choices: [{ label: 'S', value: 'S', priceModifier: 0 }, { label: 'M', value: 'M', priceModifier: 0 }] }
+      {
+        name: 'Синтетика + хлопок',
+        type: 'radio',
+        choices: [
+          { 
+            label: 'Двуслойная/Сэндвич (белый)', 
+            value: 'two_layer_white',
+            description: 'Внутренний слой 100% хлопок, внешний слой 100% полиэстер. Плотность 165 гр/м². Размеры 22-64.'
+          },
+          { 
+            label: 'evo "Имитация хлопка" (белый)', 
+            value: 'evo_white',
+            description: 'Полиэстер 65%, хлопок 35%. Плотность 175 гр/м². Размеры 22-64.'
+          }
+        ]
+      },
+      {
+        name: 'Цветной хлопок',
+        type: 'radio',
+        choices: [
+          { 
+            label: '100% хлопок 165 гр/м²', 
+            value: 'cotton_165',
+            description: 'Цвета: белая, черная, красная, желтая, зеленая, синяя. Плотность 165 гр/м². Размеры 22-64.'
+          },
+          { 
+            label: '100% хлопок 230 гр/м²', 
+            value: 'cotton_230',
+            description: 'Цвета: белая, черная, красная, желтая, зеленая, синяя. Плотность 230 гр/м². Размеры 22-64.'
+          }
+        ]
+      },
+      {
+        name: 'Размер принта',
+        type: 'radio',
+        choices: [
+          { label: 'А4', value: 'a4' },
+          { label: 'А3 (+100₽)', value: 'a3' }
+        ]
+      },
+      {
+        name: 'Печать на второй стороне',
+        type: 'radio',
+        choices: [
+          { 
+            label: 'Нет', 
+            value: 'none'
+          },
+          { 
+            label: 'А4 (+100₽)', 
+            value: 'double_sided_a4'
+          },
+          { 
+            label: 'А3 (+200₽)', 
+            value: 'double_sided_a3'
+          }
+        ]
+      },
+      {
+        name: 'Размер футболки',
+        type: 'quantity-input',
+        pricePerUnit: 0,
+        initialValue: 22,
+        minValue: 22,
+        maxValue: 64,
+        step: 1,
+        label: 'Размер (22-64)'
+      },
+      {
+        name: 'Количество',
+        type: 'quantity-input',
+        pricePerUnit: 0,
+        initialValue: 1,
+        minValue: 1,
+        maxValue: 1000,
+        step: 1,
+        label: 'Количество футболок'
+      }
     ]
   },
   {
@@ -621,10 +696,27 @@ export const products = [
     name: 'Магниты',
     image: hasImages(22) ? getMainImage(22) : magnetImg,
     carouselImages: hasImages(22) ? [getMainImage(22), ...getGalleryImages(22)] : [magnetImg, magnetImg],
-    description: 'Магниты с вашим дизайном. Отличный сувенир. от 9.0 ₽ за шт.',
-    basePrice: 90,
+    description: 'Магниты и брелоки с вашим дизайном. Цена указана за 1 шт при соответствующем тираже.',
+    basePrice: 35,
     options: [
-      { name: 'Материал', type: 'radio', choices: [{ label: 'Винил', value: 'vinyl', priceModifier: 0 }, { label: 'Акрил', value: 'acrylic', priceModifier: 30 }] }
+      {
+        name: 'Тип и тираж',
+        type: 'product-table',
+        tableData: {
+          quantities: [10, 30, 40, 50, 100],
+          rows: [
+            { name: 'Акриловый магнит 65x65мм', displayRowName: '65x65мм акрил', prices: [800/10, 2100/30, 2400/40, 2500/50, 3500/100] },
+            { name: 'Акриловый магнит 70x105мм', displayRowName: '70x105мм акрил', prices: [900/10, 2700/30, 3200/40, 3500/50, 6500/100] },
+            { name: 'Акриловый магнит 100x100мм', displayRowName: '100x100мм акрил', prices: [1000/10, 2700/30, 3200/40, 3500/50, 6500/100] },
+            { name: 'Виниловый магнит 50x90мм', displayRowName: '50x90мм винил', prices: [500/10, 1200/30, 1400/40, 1500/50, 2000/100] },
+            { name: 'Виниловый магнит 100x150мм', displayRowName: '100x150мм винил', prices: [1000/10, 2700/30, 3200/40, 3500/50, 5000/100] },
+            { name: 'Виниловый магнит A5 (148x210мм)', displayRowName: 'A5 винил', prices: [1500/10, 3500/30, 0, 0, 5000/100] },
+            { name: 'Виниловый магнит A4 (210x297мм)', displayRowName: 'A4 винил', prices: [3000/10, 0, 0, 0, 0] },
+            { name: 'Виниловый магнит A3 (297x420мм)', displayRowName: 'A3 винил', prices: [4000/10, 0, 0, 0, 0] },
+            { name: 'Закатной магнит 37мм ', displayRowName: '37мм закатной', prices: [100, 70, 50, 45, 37] }
+          ]
+        }
+      }
     ]
   },
   {
@@ -638,26 +730,34 @@ export const products = [
       { name: 'Форма', type: 'radio', choices: [{ label: 'Прямоугольник', value: 'rect', priceModifier: 0 }, { label: 'Круг', value: 'circle', priceModifier: 0 }] }
     ]
   },
-  {
-    id: 24,
-    name: 'Шильды',
-    image: hasImages(18) ? getMainImage(18) : stubImage,
-    carouselImages: hasImages(18) ? [getMainImage(18), ...getGalleryImages(18)] : [stubImage, stubImage],
-    description: 'Шильды с вашим дизайном. Металлические, пластиковые. от 15.0 ₽ за шт.',
-    basePrice: 150,
-    options: [
-      { name: 'Размер', type: 'radio', choices: [{ label: '20x30мм', value: '20x30', priceModifier: 0 }, { label: '30x50мм', value: '30x50', priceModifier: 50 }] }
-    ]
-  },
+
   {
     id: 25,
     name: 'Печать на металле',
     image: hasImages(18) ? getMainImage(18) : stubImage,
     carouselImages: hasImages(18) ? [getMainImage(18), ...getGalleryImages(18)] : [stubImage, stubImage],
-    description: 'Печать на металле. Высокое качество изображения. от 30.0 ₽ за шт.',
-    basePrice: 300,
+    description: 'Шильдики. Материал алюминий 0,5 мм. Ассортимент металла: золото, серебро, белый.',
+    basePrice: 0,
     options: [
-      { name: 'Толщина', type: 'radio', choices: [{ label: '0.5мм', value: '0.5', priceModifier: 0 }, { label: '1мм', value: '1', priceModifier: 100 }] }
+      {
+        name: 'Размер и тираж',
+        type: 'product-table',
+        tableData: {
+          quantities: [1, 1, 1, 1, 1], // Для отображения "от" цен
+          rows: [
+            { name: 'A4', displayRowName: 'A4', prices: [400] },
+            { name: 'A5', displayRowName: 'A5', prices: [200] },
+            { name: '5x9 см', displayRowName: '5x9 см', prices: [135] },
+            { name: 'Круг 25 мм', displayRowName: 'Круг 25мм', prices: [50] },
+            { name: 'Круг 50 мм', displayRowName: 'Круг 50мм', prices: [85] }
+          ]
+        }
+      },
+      {
+        name: 'Примечание',
+        type: 'info',
+        text: 'Другие размеры рассчитываются индивидуально в зависимости от размера и тиража.'
+      }
     ]
   },
   {

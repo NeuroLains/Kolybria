@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ProductImage from './ProductImage';
+import { getMainImage, hasImages } from '../utils/imageLoader';
 import './ProductCard.css';
 
 export default function ProductCard({ to, image, title, price, productId }) {
+  const [backgroundImage, setBackgroundImage] = useState(null);
+  const [backgroundError, setBackgroundError] = useState(false);
+
+  useEffect(() => {
+    // Загружаем main изображение для фона
+    if (hasImages(productId) && !backgroundError) {
+      const mainImage = getMainImage(productId);
+      if (mainImage) {
+        // Проверяем загрузку изображения
+        const img = new Image();
+        img.onload = () => {
+          setBackgroundImage(mainImage);
+        };
+        img.onerror = () => {
+          setBackgroundError(true);
+        };
+        img.src = mainImage;
+      }
+    }
+  }, [productId, backgroundError]);
+
   const formatPrice = (priceStr) => {
     if (!priceStr) return { value: '0', unit: '' };
     // Remove any spaces and replace commas with dots
@@ -31,6 +53,16 @@ export default function ProductCard({ to, image, title, price, productId }) {
 
   return (
     <Link to={to} className="product-card">
+      {/* Размытое фоновое изображение */}
+      {backgroundImage && (
+        <div 
+          className="product-card-bg-image"
+          style={{
+            backgroundImage: `url(${backgroundImage})`
+          }}
+        />
+      )}
+      
       <div className="product-card-img-wrap">
         <ProductImage 
           productId={productId}

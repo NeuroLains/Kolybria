@@ -42,7 +42,11 @@
   },
   "6": {
     "main": "/src/assets/gallery/product_6/main.jpg",
-    "gallery": []
+    "gallery": [
+      "/src/assets/gallery/product_6/gallery_1.jpg",
+      "/src/assets/gallery/product_6/gallery_2.jpg",
+      "/src/assets/gallery/product_6/gallery_3.jpg"
+    ]
   },
   "7": {
     "main": "/src/assets/gallery/product_7/main.jpg",
