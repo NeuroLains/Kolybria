@@ -13,7 +13,7 @@ import phoneIcon from './assets/icons/phone.svg';
 import TopInfoBar from './pages/TopInfoBar';
 import ProductPage from './pages/ProductPage';
 import StubPage from './pages/StubPage';
-import Polygraphy from './pages/Polygraphy';
+import Polygraphy from './pages/Polygraphy'; // Importing Polygraphy page
 import Advert from './pages/Advert';
 import './App.css';
 
