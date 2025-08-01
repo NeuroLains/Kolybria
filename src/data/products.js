@@ -734,8 +734,8 @@ export const products = [
   {
     id: 25,
     name: 'Печать на металле',
-    image: hasImages(18) ? getMainImage(18) : stubImage,
-    carouselImages: hasImages(18) ? [getMainImage(18), ...getGalleryImages(18)] : [stubImage, stubImage],
+    image: hasImages(25) ? getMainImage(25) : stubImage,
+    carouselImages: hasImages(25) ? [getMainImage(25), ...getGalleryImages(25)] : [stubImage, stubImage],
     description: 'Шильдики. Материал алюминий 0,5 мм. Ассортимент металла: золото, серебро, белый.',
     basePrice: 0,
     options: [

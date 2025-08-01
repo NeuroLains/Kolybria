@@ -110,6 +110,7 @@ function toRuLayout(str) {
 }
 
 const searchDataRaw = [
+  // Полиграфия (ID 1-16)
   { title: 'Визитки', to: '/product/1', keywords: ['визитка', 'визитки', 'визитная карточка', 'business card', 'карточка', 'визиточная', 'визиточная карточка'] },
   { title: 'Листовки', to: '/product/2', keywords: ['листовка', 'листовки', 'flyer', 'лист', 'листовочка', 'флаер', 'флаеры'] },
   { title: 'Буклеты', to: '/product/3', keywords: ['буклет', 'буклеты', 'booklet', 'каталог', 'каталоги', 'брошюра', 'брошюры'] },
@@ -120,44 +121,49 @@ const searchDataRaw = [
   { title: 'Чертежи', to: '/product/8', keywords: ['чертеж', 'чертежи', 'drawing', 'план', 'планы', 'схема', 'схемы'] },
   { title: 'Печать Фото', to: '/product/9', keywords: ['фото', 'печать фото', 'фотопечать', 'photoprint', 'фотография', 'фотографии', 'фотоснимок'] },
   { title: 'Календари', to: '/product/10', keywords: ['календарь', 'календари', 'calendar', 'ежедневник', 'планер'] },
-  { title: 'Наклейки', to: '/product/11', keywords: ['наклейка', 'наклейки', 'sticker', 'стикер', 'стикеры', 'этикетка', 'этикетки'] },
-  { title: 'Стикеры', to: '/product/12', keywords: ['стикер', 'стикеры', 'label', 'наклейка', 'наклейки', 'этикетка', 'этикетки'] },
+  { title: 'Наклейки и Стикеры', to: '/product/11', keywords: ['наклейка', 'наклейки', 'стикер', 'стикеры', 'этикетка', 'этикетки', 'sticker', 'label'] },
   { title: 'Пластиковые Карты', to: '/product/13', keywords: ['пластиковая карта', 'пластиковые карты', 'plastic card', 'карта', 'карты', 'пропуск', 'пропуска'] },
   { title: 'Ризография', to: '/product/14', keywords: ['ризография', 'risograph', 'оперативная печать', 'дупликатор'] },
   { title: 'Бланки', to: '/product/15', keywords: ['бланк', 'бланки', 'form', 'форма', 'формы', 'бланк строгой отчетности'] },
   { title: 'Самокопирующиеся Бланки', to: '/product/16', keywords: ['самокопирующийся бланк', 'самокопирующиеся бланки', 'carbonless', 'копия', 'копии', 'самокопирка'] },
+
+  // Сувенирная продукция (ID 17-32)
   { title: 'Значки', to: '/product/17', keywords: ['значок', 'значки', 'badge', 'сувенир', 'значёк', 'значки на заказ'] },
   { title: '3Д Стикеры', to: '/product/18', keywords: ['3d стикер', '3д стикеры', '3d sticker', 'трёхмерный стикер', 'объемный стикер'] },
-  { title: 'Шоколадки', to: '/product/19', keywords: ['шоколадка', 'шоколадки', 'chocolate', 'сладости', 'сувенирный шоколад'] },
-  { title: 'Кружки', to: '/product/20', keywords: ['кружка', 'кружки', 'mug', 'чашка', 'чашки', 'сувенирная кружка'] },
-  { title: 'Футболки', to: '/product/21', keywords: ['футболка', 'футболки', 'tshirt', 'печать на футболках', 'сублимация', 'одежда', 'сувенирная одежда'] },
-  { title: 'Бейсболки', to: '/product/22', keywords: ['бейсболка', 'бейсболки', 'cap', 'кепка', 'кепки', 'головной убор'] },
-  { title: 'Магниты', to: '/product/23', keywords: ['магнит', 'магниты', 'magnet', 'сувенирный магнит', 'магнитик'] },
-  { title: 'Брелоки', to: '/product/24', keywords: ['брелок', 'брелоки', 'keychain', 'ключ', 'ключи', 'сувенирный брелок'] },
-  { title: 'Шильды', to: '/product/25', keywords: ['шильд', 'шильды', 'plate', 'табличка', 'таблички', 'металлическая табличка'] },
-  { title: 'Печать на металле', to: '/product/26', keywords: ['печать на металле', 'металл', 'metal print', 'сублимация', 'металлический', 'сувенир из металла'] },
-  { title: 'Сумки', to: '/product/27', keywords: ['сумка', 'сумки', 'bag', 'шоппер', 'эко-сумка', 'сувенирная сумка'] },
-  { title: 'Рюкзаки', to: '/product/28', keywords: ['рюкзак', 'рюкзаки', 'backpack', 'сумка', 'ранец', 'сувенирный рюкзак'] },
-  { title: 'Пазлы', to: '/product/29', keywords: ['пазл', 'пазлы', 'puzzle', 'головоломка', 'сувенирный пазл'] },
-  { title: 'Коврики', to: '/product/30', keywords: ['коврик', 'коврики', 'mat', 'ковер', 'ковры', 'коврик для мыши'] },
-  { title: 'Ленты', to: '/product/31', keywords: ['лента', 'ленты', 'ribbon', 'ткань', 'тканевые ленты', 'сувенирная лента'] },
-  { title: 'Флаги', to: '/product/32', keywords: ['флаг', 'флаги', 'flag', 'баннер', 'баннеры', 'сувенирный флаг'] },
-  { title: 'Баннеры', to: '/product/33', keywords: ['баннер', 'баннеры', 'banner', 'флаг', 'флаги', 'наружная реклама'] },
-  { title: 'Стенды', to: '/product/34', keywords: ['стенд', 'стенды', 'stand', 'выставка', 'выставочные стенды', 'рекламный стенд'] },
-  { title: 'Таблички', to: '/product/35', keywords: ['табличка', 'таблички', 'plate', 'шильд', 'шильды', 'информационная табличка'] },
-  { title: 'Roll UP', to: '/product/36', keywords: ['roll up', 'ролл ап', 'мобильный стенд', 'rollup', 'роллап'] },
-  { title: 'Press Wall', to: '/product/37', keywords: ['press wall', 'пресс волл', 'фотозона', 'presswall', 'прессволл'] },
-  { title: 'Х – образные стойки', to: '/product/38', keywords: ['х-стенд', 'х-образная стойка', 'x-stand', 'x-stands', 'стойка', 'рекламная стойка'] },
-  { title: 'Таблички для оплаты', to: '/product/39', keywords: ['табличка для оплаты', 'оплата', 'plate', 'табличка оплаты'] },
-  { title: 'Адресные Таблички', to: '/product/40', keywords: ['адресная табличка', 'адресные таблички', 'address plate', 'табличка адрес'] },
-  { title: 'Плоттерная Резка', to: '/product/41', keywords: ['плоттерная резка', 'резка', 'plotter cut', 'плоттер', 'резка пленки'] },
-  { title: 'Разработка макетов', to: '/product/42', keywords: ['дизайн', 'макет', 'макеты', 'maket', 'design', 'макетирование', 'дизайн-проект'] },
-  { title: 'Ламинирование', to: '/product/43', keywords: ['ламинирование', 'lamination', 'пленка', 'защита', 'ламинировать'] },
-  { title: 'Брошюровка', to: '/product/44', keywords: ['брошюровка', 'binding', 'скрепление', 'переплет', 'брошюровать'] },
-  { title: 'Степлирование', to: '/product/45', keywords: ['степлирование', 'stapling', 'скрепка', 'скрепить', 'степлер'] },
-  { title: 'Твердый Переплет', to: '/product/46', keywords: ['твердый переплет', 'hardcover', 'книга', 'книги', 'жесткий переплет'] },
-  { title: 'Изготовление Печатей', to: '/product/47', keywords: ['печать', 'печати', 'stamp', 'штамп', 'штампы', 'изготовление штампов'] },
-  { title: 'Брендирование', to: '/product/48', keywords: ['брендирование', 'branding', 'бренд', 'логотип', 'брендировать'] }
+  { title: 'Кружка', to: '/product/19', keywords: ['кружка', 'кружки', 'mug', 'чашка', 'чашки', 'сувенирная кружка'] },
+  { title: 'Футболки', to: '/product/20', keywords: ['футболка', 'футболки', 'tshirt', 'печать на футболках', 'сублимация', 'одежда', 'сувенирная одежда'] },
+  { title: 'Бейсболки', to: '/product/21', keywords: ['бейсболка', 'бейсболки', 'cap', 'кепка', 'кепки', 'головной убор'] },
+  // Мелкая сувенирка
+  { title: 'Магниты', to: '/product/22', keywords: ['магнит', 'магниты', 'magnet', 'сувенирный магнит', 'магнитик', 'на холодильник'] },
+  { title: 'Брелоки', to: '/product/23', keywords: ['брелок', 'брелоки', 'keychain', 'ключ', 'ключи', 'сувенирный брелок', 'для ключей'] },
+  { title: 'Металлические сувениры', to: '/product/24', keywords: ['металл', 'metal print', 'сублимация', 'металлический', 'сувенир из металла', 'жетон', 'шильд'] },
+  // Текстиль и аксессуары
+  { title: 'Сумки', to: '/product/25', keywords: ['сумка', 'сумки', 'bag', 'шоппер', 'эко-сумка', 'сувенирная сумка', 'текстиль'] },
+  { title: 'Рюкзаки', to: '/product/26', keywords: ['рюкзак', 'рюкзаки', 'backpack', 'сумка', 'ранец', 'сувенирный рюкзак', 'текстиль'] },
+  { title: 'Пазлы', to: '/product/27', keywords: ['пазл', 'пазлы', 'puzzle', 'головоломка', 'сувенирный пазл', 'игры'] },
+  { title: 'Коврики', to: '/product/28', keywords: ['коврик', 'коврики', 'mat', 'ковер', 'ковры', 'коврик для мыши', 'для компьютера'] },
+  { title: 'Ленты', to: '/product/29', keywords: ['лента', 'ленты', 'ribbon', 'ткань', 'тканевые ленты', 'сувенирная лента', 'текстиль'] },
+  // Наружная реклама
+  { title: 'Флаги', to: '/product/30', keywords: ['флаг', 'флаги', 'flag', 'баннер', 'рекламный флаг', 'уличная реклама'] },
+  { title: 'Баннеры', to: '/product/31', keywords: ['баннер', 'баннеры', 'banner', 'растяжка', 'полотно', 'наружная реклама'] },
+
+  // Рекламные конструкции (ID 33-40)
+  { title: 'Стенды', to: '/product/33', keywords: ['стенд', 'стенды', 'stand', 'выставка', 'выставочные стенды', 'рекламный стенд'] },
+  { title: 'Таблички', to: '/product/34', keywords: ['табличка', 'таблички', 'plate', 'шильд', 'шильды', 'информационная табличка'] },
+  { title: 'Roll UP', to: '/product/35', keywords: ['roll up', 'ролл ап', 'мобильный стенд', 'rollup', 'роллап'] },
+  { title: 'Press Wall', to: '/product/36', keywords: ['press wall', 'пресс волл', 'фотозона', 'presswall', 'прессволл'] },
+  { title: 'Х-образные стойки', to: '/product/37', keywords: ['х-стенд', 'х-образная стойка', 'x-stand', 'x-stands', 'стойка', 'рекламная стойка'] },
+  { title: 'Таблички для оплаты', to: '/product/38', keywords: ['табличка для оплаты', 'оплата', 'plate', 'табличка оплаты'] },
+  { title: 'Адресные Таблички', to: '/product/39', keywords: ['адресная табличка', 'адресные таблички', 'address plate', 'табличка адрес'] },
+  { title: 'Плоттерная Резка', to: '/product/40', keywords: ['плоттерная резка', 'резка', 'plotter cut', 'плоттер', 'резка пленки'] },
+  // Услуги (ID 41-47)
+  { title: 'Разработка макетов', to: '/product/41', keywords: ['дизайн', 'макет', 'макеты', 'maket', 'design', 'макетирование', 'дизайн-проект'] },
+  { title: 'Ламинирование', to: '/product/42', keywords: ['ламинирование', 'lamination', 'пленка', 'защита', 'ламинировать'] },
+  { title: 'Брошюровка', to: '/product/43', keywords: ['брошюровка', 'binding', 'скрепление', 'переплет', 'брошюровать'] },
+  { title: 'Степлирование', to: '/product/44', keywords: ['степлирование', 'stapling', 'скрепка', 'скрепить', 'степлер'] },
+  { title: 'Твердый Переплет', to: '/product/45', keywords: ['твердый переплет', 'hardcover', 'книга', 'книги', 'жесткий переплет'] },
+  { title: 'Изготовление Печатей', to: '/product/46', keywords: ['печать', 'печати', 'stamp', 'штамп', 'штампы', 'изготовление штампов'] },
+  { title: 'Брендирование', to: '/product/47', keywords: ['брендирование', 'branding', 'бренд', 'логотип', 'брендировать'] }
 ];
 
 // Генерируем расширенный массив с транслитом и опечатками
@@ -499,26 +505,26 @@ export default function TopInfoBar() {
                   }}
                 >
                   <i className="fas fa-print"></i>
-                  <Link to="/polygraphy" style={{flex:1, textDecoration:'none', color:'inherit'}} onClick={() => setCatalogOpen(false)}>Полиграфия</Link>
+                  <Link to="/polygraphy" style={{flex:1, textDecoration:'none', color:'inherit'}} onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Полиграфия</Link>
                   <span className="arrow-icon">›</span>
                   <div className="catalog-submenu" style={{display: hoveredSubmenu==='polygraphy' ? 'flex' : 'none'}}>
                     <ul className="submenu-list">
-                      <li><Link to="/product/1" className="submenu-link" onClick={() => setCatalogOpen(false)}>Визитки</Link></li>
-                      <li><Link to="/product/2" className="submenu-link" onClick={() => setCatalogOpen(false)}>Листовки</Link></li>
-                      <li><Link to="/product/3" className="submenu-link" onClick={() => setCatalogOpen(false)}>Буклеты</Link></li>
-                      <li><Link to="/product/4" className="submenu-link" onClick={() => setCatalogOpen(false)}>Блокноты</Link></li>
-                      <li><Link to="/product/5" className="submenu-link" onClick={() => setCatalogOpen(false)}>Конверты</Link></li>
-                      <li><Link to="/product/6" className="submenu-link" onClick={() => setCatalogOpen(false)}>Брошюры</Link></li>
-                      <li><Link to="/product/7" className="submenu-link" onClick={() => setCatalogOpen(false)}>Плакаты</Link></li>
-                      <li><Link to="/product/8" className="submenu-link" onClick={() => setCatalogOpen(false)}>Чертежи</Link></li>
-                      <li><Link to="/product/9" className="submenu-link" onClick={() => setCatalogOpen(false)}>Печать Фото</Link></li>
-                      <li><Link to="/product/10" className="submenu-link" onClick={() => setCatalogOpen(false)}>Календари</Link></li>
-                      <li><Link to="/product/11" className="submenu-link" onClick={() => setCatalogOpen(false)}>Наклейки</Link></li>
-                      <li><Link to="/product/12" className="submenu-link" onClick={() => setCatalogOpen(false)}>Стикеры</Link></li>
-                      <li><Link to="/product/13" className="submenu-link" onClick={() => setCatalogOpen(false)}>Пластиковые Карты</Link></li>
-                      <li><Link to="/product/14" className="submenu-link" onClick={() => setCatalogOpen(false)}>Ризография</Link></li>
-                      <li><Link to="/product/15" className="submenu-link" onClick={() => setCatalogOpen(false)}>Бланки</Link></li>
-                      <li><Link to="/product/16" className="submenu-link" onClick={() => setCatalogOpen(false)}>Самокопирующиеся Бланки</Link></li>
+                      <li><Link to="/product/1?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Визитки</Link></li>
+                      <li><Link to="/product/2?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Листовки</Link></li>
+                      <li><Link to="/product/3?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Буклеты</Link></li>
+                      <li><Link to="/product/4?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Блокноты</Link></li>
+                      <li><Link to="/product/5?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Конверты</Link></li>
+                      <li><Link to="/product/6?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Брошюры</Link></li>
+                      <li><Link to="/product/7?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Плакаты</Link></li>
+                      <li><Link to="/product/8?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Чертежи</Link></li>
+                      <li><Link to="/product/9?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Печать Фото</Link></li>
+                      <li><Link to="/product/10?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Календари</Link></li>
+                      <li><Link to="/product/11?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Наклейки</Link></li>
+                      <li><Link to="/product/12?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Стикеры</Link></li>
+                      <li><Link to="/product/13?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Пластиковые Карты</Link></li>
+                      <li><Link to="/product/14?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Ризография</Link></li>
+                      <li><Link to="/product/15?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Бланки</Link></li>
+                      <li><Link to="/product/16?category=polygraphy" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Самокопирующиеся Бланки</Link></li>
                     </ul>
                   </div>
                 </div>
@@ -538,26 +544,24 @@ export default function TopInfoBar() {
                   }}
                 >
                   <i className="fas fa-gift"></i>
-                  <Link to="/souvenirs" style={{flex:1, textDecoration:'none', color:'inherit'}} onClick={() => setCatalogOpen(false)}>Сувенирная продукция</Link>
+                  <Link to="/souvenirs" style={{flex:1, textDecoration:'none', color:'inherit'}} onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Сувенирная продукция</Link>
                   <span className="arrow-icon">›</span>
                   <div className="catalog-submenu" style={{display: hoveredSubmenu==='souvenirs' ? 'flex' : 'none'}}>
                     <ul className="submenu-list">
-                      <li><Link to="/product/17" className="submenu-link" onClick={() => setCatalogOpen(false)}>Значки</Link></li>
-                      <li><Link to="/product/18" className="submenu-link" onClick={() => setCatalogOpen(false)}>3Д Стикеры</Link></li>
-                      <li><Link to="/product/19" className="submenu-link" onClick={() => setCatalogOpen(false)}>Шоколадки</Link></li>
-                      <li><Link to="/product/20" className="submenu-link" onClick={() => setCatalogOpen(false)}>Кружки</Link></li>
-                      <li><Link to="/product/21" className="submenu-link" onClick={() => setCatalogOpen(false)}>Футболки</Link></li>
-                      <li><Link to="/product/22" className="submenu-link" onClick={() => setCatalogOpen(false)}>Бейсболки</Link></li>
-                      <li><Link to="/product/23" className="submenu-link" onClick={() => setCatalogOpen(false)}>Магниты</Link></li>
-                      <li><Link to="/product/24" className="submenu-link" onClick={() => setCatalogOpen(false)}>Брелоки</Link></li>
-                      <li><Link to="/product/25" className="submenu-link" onClick={() => setCatalogOpen(false)}>Шильды</Link></li>
-                      <li><Link to="/product/26" className="submenu-link" onClick={() => setCatalogOpen(false)}>Печать на металле</Link></li>
-                      <li><Link to="/product/27" className="submenu-link" onClick={() => setCatalogOpen(false)}>Сумки</Link></li>
-                      <li><Link to="/product/28" className="submenu-link" onClick={() => setCatalogOpen(false)}>Рюкзаки</Link></li>
-                      <li><Link to="/product/29" className="submenu-link" onClick={() => setCatalogOpen(false)}>Пазлы</Link></li>
-                      <li><Link to="/product/30" className="submenu-link" onClick={() => setCatalogOpen(false)}>Коврики</Link></li>
-                      <li><Link to="/product/31" className="submenu-link" onClick={() => setCatalogOpen(false)}>Ленты</Link></li>
-                      <li><Link to="/product/32" className="submenu-link" onClick={() => setCatalogOpen(false)}>Флаги</Link></li>
+                      <li><Link to="/product/17?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Значки</Link></li>
+                      <li><Link to="/product/18?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>3Д Стикеры</Link></li>
+                      <li><Link to="/product/19?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Кружки</Link></li>
+                      <li><Link to="/product/20?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Футболки</Link></li>
+                      <li><Link to="/product/21?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Бейсболки</Link></li>
+                      <li><Link to="/product/22?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Магниты</Link></li>
+                      <li><Link to="/product/23?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Брелоки</Link></li>
+                      <li><Link to="/product/25?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Печать на металле</Link></li>
+                      <li><Link to="/product/26?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Сумки</Link></li>
+                      <li><Link to="/product/27?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Рюкзаки</Link></li>
+                      <li><Link to="/product/28?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Пазлы</Link></li>
+                      <li><Link to="/product/29?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Коврики</Link></li>
+                      <li><Link to="/product/30?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Ленты</Link></li>
+                      <li><Link to="/product/31?category=souvenirs" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Флаги</Link></li>
                     </ul>
                   </div>
                 </div>
@@ -577,19 +581,19 @@ export default function TopInfoBar() {
                   }}
                 >
                   <i className="fas fa-building"></i>
-                  <Link to="/advert" style={{flex:1, textDecoration:'none', color:'inherit'}} onClick={() => setCatalogOpen(false)}>Рекламные конструкции</Link>
+                  <Link to="/advert" style={{flex:1, textDecoration:'none', color:'inherit'}} onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Рекламные конструкции</Link>
                   <span className="arrow-icon">›</span>
                   <div className="catalog-submenu" style={{display: hoveredSubmenu==='advert' ? 'flex' : 'none'}}>
                     <ul className="submenu-list">
-                      <li><Link to="/product/33" className="submenu-link" onClick={() => setCatalogOpen(false)}>Баннеры</Link></li>
-                      <li><Link to="/product/34" className="submenu-link" onClick={() => setCatalogOpen(false)}>Стенды</Link></li>
-                      <li><Link to="/product/35" className="submenu-link" onClick={() => setCatalogOpen(false)}>Таблички</Link></li>
-                      <li><Link to="/product/36" className="submenu-link" onClick={() => setCatalogOpen(false)}>Roll UP</Link></li>
-                      <li><Link to="/product/37" className="submenu-link" onClick={() => setCatalogOpen(false)}>Press Wall</Link></li>
-                      <li><Link to="/product/38" className="submenu-link" onClick={() => setCatalogOpen(false)}>Х – образные стойки</Link></li>
-                      <li><Link to="/product/39" className="submenu-link" onClick={() => setCatalogOpen(false)}>Таблички для оплаты</Link></li>
-                      <li><Link to="/product/40" className="submenu-link" onClick={() => setCatalogOpen(false)}>Адресные Таблички</Link></li>
-                      <li><Link to="/product/41" className="submenu-link" onClick={() => setCatalogOpen(false)}>Плоттерная Резка</Link></li>
+                      <li><Link to="/product/32?category=advert" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Баннеры</Link></li>
+                      <li><Link to="/product/33?category=advert" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Стенды</Link></li>
+                      <li><Link to="/product/34?category=advert" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Таблички</Link></li>
+                      <li><Link to="/product/35?category=advert" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Roll UP</Link></li>
+                      <li><Link to="/product/36?category=advert" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Press Wall</Link></li>
+                      <li><Link to="/product/37?category=advert" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Х – образные стойки</Link></li>
+                      <li><Link to="/product/38?category=advert" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Таблички для оплаты</Link></li>
+                      <li><Link to="/product/39?category=advert" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Адресные Таблички</Link></li>
+                      <li><Link to="/product/40?category=advert" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Плоттерная Резка</Link></li>
                     </ul>
                   </div>
                 </div>
@@ -609,17 +613,17 @@ export default function TopInfoBar() {
                   }}
                 >
                   <i className="fas fa-tools"></i>
-                  <Link to="/services" style={{flex:1, textDecoration:'none', color:'inherit'}} onClick={() => setCatalogOpen(false)}>Услуги</Link>
+                  <Link to="/services" style={{flex:1, textDecoration:'none', color:'inherit'}} onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Услуги</Link>
                   <span className="arrow-icon">›</span>
                   <div className="catalog-submenu" style={{display: hoveredSubmenu==='services' ? 'flex' : 'none'}}>
                     <ul className="submenu-list">
-                      <li><Link to="/product/42" className="submenu-link" onClick={() => setCatalogOpen(false)}>Разработка макетов</Link></li>
-                      <li><Link to="/product/43" className="submenu-link" onClick={() => setCatalogOpen(false)}>Ламинирование</Link></li>
-                      <li><Link to="/product/44" className="submenu-link" onClick={() => setCatalogOpen(false)}>Брошюровка</Link></li>
-                      <li><Link to="/product/45" className="submenu-link" onClick={() => setCatalogOpen(false)}>Степлирование</Link></li>
-                      <li><Link to="/product/46" className="submenu-link" onClick={() => setCatalogOpen(false)}>Твердый Переплет</Link></li>
-                      <li><Link to="/product/47" className="submenu-link" onClick={() => setCatalogOpen(false)}>Изготовление Печатей</Link></li>
-                      <li><Link to="/product/48" className="submenu-link" onClick={() => setCatalogOpen(false)}>Брендирование</Link></li>
+                      <li><Link to="/product/41?category=services" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Разработка макетов</Link></li>
+                      <li><Link to="/product/42?category=services" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Ламинирование</Link></li>
+                      <li><Link to="/product/43?category=services" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Брошюровка</Link></li>
+                      <li><Link to="/product/44?category=services" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Степлирование</Link></li>
+                      <li><Link to="/product/45?category=services" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Твердый Переплет</Link></li>
+                      <li><Link to="/product/46?category=services" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Изготовление Печатей</Link></li>
+                      <li><Link to="/product/47?category=services" className="submenu-link" onClick={() => {setCatalogOpen(false); setHoveredSubmenu(null);}}>Брендирование</Link></li>
                     </ul>
                   </div>
                 </div>

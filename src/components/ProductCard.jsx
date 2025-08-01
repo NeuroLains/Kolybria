@@ -51,9 +51,11 @@ export default function ProductCard({ to, image, title, price, productId }) {
   // Truncate title manually for better control
   const displayTitle = title.length > 50 ? title.substring(0, 47) + '...' : title;
 
+  // Construct the product URL with query parameters
+  const productUrl = `/product/${productId}${to.includes('?') ? to.substring(to.indexOf('?')) : ''}`;
+
   return (
-    <Link to={to} className="product-card">
-      {/* Размытое фоновое изображение */}
+    <Link to={productUrl} className="product-card">
       {backgroundImage && (
         <div 
           className="product-card-bg-image"

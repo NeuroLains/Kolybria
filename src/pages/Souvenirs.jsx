@@ -24,13 +24,47 @@ export default function Souvenirs() {
 
   const filteredSouvenirsProducts = products.filter(product => 
     souvenirsProductIds.includes(product.id)
-  ).map(product => ({
-    ...product,
-    to: `/product/${product.id}`,
-    image: product.image,
-    title: product.name || product.title,
-    displayPrice: getFormattedPrice(product)
-  }));
+  ).map(product => {
+    let queryParams = new URLSearchParams();
+    
+    // Добавляем базовые параметры в зависимости от типа товара
+    switch (product.id) {
+      case 17: // Значки
+        queryParams.append('Размер и тип', 'Значки 25 мм. Металл. Булавка');
+        queryParams.append('quantity_table', '100');
+        break;
+      case 18: // 3Д стикеры
+        queryParams.append('Размер и количество', 'Прямоугольник размер 50x50 мм');
+        queryParams.append('quantity_table', '30');
+        break;
+      case 19: // Кружки
+        queryParams.append('Тип и количество', 'Белая кружка');
+        queryParams.append('quantity_table', '50');
+        break;
+      case 20: // Футболки
+        queryParams.append('Синтетика + хлопок', 'two_layer_white');
+        queryParams.append('Размер футболки', 'S');
+        queryParams.append('Количество', '10');
+        queryParams.append('Размер принта', 'a4');
+        break;
+      case 21: // Бейсболки
+        queryParams.append('Тип и количество', 'Бейсболка белая');
+        queryParams.append('quantity_table', '50');
+        break;
+      case 22: // Магниты
+        queryParams.append('Размер и тип', 'Магнит 70x100 мм');
+        queryParams.append('quantity_table', '100');
+        break;
+    }
+
+    return {
+      ...product,
+      to: `/product/${product.id}${queryParams.toString() ? '?' + queryParams.toString() : ''}`,
+      image: product.image,
+      title: product.name || product.title,
+      displayPrice: getFormattedPrice(product)
+    };
+  });
 
   return (
     <div style={{ padding: '32px 0', textAlign: 'center' }}>

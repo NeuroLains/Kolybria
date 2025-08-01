@@ -398,7 +398,38 @@ function StickerCalculator({
 export default function ProductPage() {
   const { id } = useParams();
   const location = useLocation();
-  const product = products.find(p => p.id === parseInt(id));
+  const productId = parseInt(id);
+  
+  // Проверка корректности ID
+  if (isNaN(productId)) {
+    return (
+      <div style={{ 
+        padding: '40px 20px',
+        textAlign: 'center',
+        fontSize: '18px',
+        color: '#666'
+      }}>
+        Неверный идентификатор товара.
+      </div>
+    );
+  }
+
+  const product = products.find(p => p.id === productId);
+
+  // Return error message if product not found
+  if (!product) {
+    console.error('Product not found for ID:', productId);
+    return (
+      <div style={{ 
+        padding: '40px 20px',
+        textAlign: 'center',
+        fontSize: '18px',
+        color: '#666'
+      }}>
+        Товар не найден. Пожалуйста, вернитесь в каталог.
+      </div>
+    );
+  }
 
   const [selectedOptions, setSelectedOptions] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -602,81 +633,61 @@ export default function ProductPage() {
     if (!product) return 0;
 
     if (product.id === 11) {
-      const selectedShape = selectedOptions['Выберите форму'];
-      let effectiveWidthCm = 0;
-      let effectiveHeightCm = 0;
-      let effectiveDiameterCm = 0;
-      let areaSqM = 0;
-      const pricePerSqMeter = product.pricePerSquareMeter || 0;
       const quantity = quantityOverride !== null ? quantityOverride : (selectedOptions['Тираж'] || 0);
-
-      if (selectedShape === 'custom_shape') {
-        effectiveWidthCm = selectedOptions['Ширина (см)'] || 0;
-        effectiveHeightCm = selectedOptions['Высота (см)'] || 0;
-      } else if (selectedShape === 'rectangle') {
-        const selectedRectSize = selectedOptions['Размер (Прямоугольные)'];
-        if (selectedRectSize === 'other_size_rectangle') {
-          effectiveWidthCm = selectedOptions['Ширина (см)'] || 0;
-          effectiveHeightCm = selectedOptions['Высота (см)'] || 0;
-        } else {
-          const rectOptionGroup = product.options.find(opt => opt.name === 'Размер (Прямоугольные)');
-          const rectOption = rectOptionGroup?.choices.find(choice => choice.value === selectedRectSize);
-          effectiveWidthCm = rectOption?.width || 0;
-          effectiveHeightCm = rectOption?.height || 0;
-        }
-      } else if (selectedShape === 'circle') {
-        const selectedCircleSize = selectedOptions['Размер (Круглые)'];
-        if (selectedCircleSize === 'other_size_circle') {
-          effectiveDiameterCm = selectedOptions['Диаметр (см)'] || 0;
-        } else {
-          const circleOptionGroup = product.options.find(opt => opt.name === 'Размер (Круглые)');
-          const circleOption = circleOptionGroup?.choices.find(choice => choice.value === selectedCircleSize);
-          effectiveDiameterCm = circleOption?.diameter || 0;
-        }
-      } else if (selectedShape === 'oval' || selectedShape === 'sticker_pack' || selectedShape === 'square') { // Добавлено 'square'
-        effectiveWidthCm = selectedOptions['Ширина (см)'] || 0;
-        effectiveHeightCm = selectedOptions['Высота (см)'] || 0;
-      }
-
-      // 2. Calculate area in square meters
-      if (selectedShape === 'circle' || (selectedShape === 'oval' && selectedOptions['Размер (Овальные)'] === 'other_size_oval') || (selectedShape === 'circle' && selectedOptions['Размер (Круглые)'] === 'other_size_circle')) {
-        areaSqM = Math.PI * Math.pow((effectiveDiameterCm / 200), 2); // Radius in meters
-      } else { // Default to rectangular area for custom_shape, rectangle, oval, sticker_pack (if custom inputs are used)
-        areaSqM = (effectiveWidthCm / 100) * (effectiveHeightCm / 100);
-      }
       
-      if (areaSqM <= 0 || quantity <= 0) {
-        return 0;
-      }
+      // Простая таблица цен за штуку в зависимости от размера и тиража
+      const priceTable = {
+        '30x30': {
+          '1': 150,
+          '5': 75,
+          '10': 50,
+          '30': 45,
+          '50': 45,
+          '100': 45
+        },
+        '25x25': {
+          '1': 150,
+          '5': 75,
+          '10': 50,
+          '30': 45,
+          '50': 45,
+          '100': 45
+        },
+        '50x50': {
+          '1': 200,
+          '5': 100,
+          '10': 70,
+          '30': 60,
+          '50': 60,
+          '100': 60
+        }
+      };
 
-      let basePricePerSticker = areaSqM * pricePerSqMeter;
+      // Определяем размер
+      let selectedSize = selectedOptions['Размер'] || '';
       
-      // Округляем до 2 знаков после запятой для избежания лишних нулей
-      basePricePerSticker = Math.round(basePricePerSticker /10 ) / 100;
-
-      product.options.forEach(optionGroup => {
-        if (optionGroup.name === 'Материал' || optionGroup.name === 'Ламинация') {
-          const selectedValue = selectedOptions[optionGroup.name];
-          const selectedChoice = optionGroup.choices.find(choice => choice.value === selectedValue);
-          if (selectedChoice && typeof selectedChoice.priceModifier === 'number') {
-            basePricePerSticker += selectedChoice.priceModifier;
+      // Определяем цену за штуку
+      let pricePerPiece = 0;
+      if (priceTable[selectedSize]) {
+        // Находим подходящую цену по количеству
+        const quantities = ['100', '50', '30', '10', '5', '1'];
+        for (const qty of quantities) {
+          if (quantity >= parseInt(qty)) {
+            pricePerPiece = priceTable[selectedSize][qty];
+            break;
           }
         }
-      });
+      }
 
-      const discountPercentage = getDiscountForQuantity(quantity);
-
-      currentPriceValue = (basePricePerSticker * quantity) * (1 - discountPercentage);
+      // Считаем итоговую цену: цена за штуку * количество
+      currentPriceValue = pricePerPiece * quantity;
 
       console.log('3D стикеры - расчет:', {
-        areaSqM,
-        pricePerSqMeter,
-        basePricePerSticker,
-        quantity,
-        discountPercentage,
-        currentPriceValue
+        размер: selectedSize,
+        количество: quantity,
+        ценаЗаШтуку: pricePerPiece,
+        итоговаяЦена: currentPriceValue
       });
-
       return currentPriceValue;
 
     } else if (product.id === 20) {
@@ -1004,6 +1015,15 @@ export default function ProductPage() {
               />
             ) : (
               product.options.map((optionGroup, groupIndex) => {
+              if (optionGroup.type === 'info') {
+                return (
+                  <div key={groupIndex} className="option-group">
+                    <div className="info-message">
+                      {optionGroup.text}
+                    </div>
+                  </div>
+                );
+              }
               if (optionGroup.type === 'product-table') {
                 const selectedTableCell = selectedOptions[optionGroup.name];
                   const tableClassName = product.id === 16 ? 'product-table compact-quantities' : 'product-table';

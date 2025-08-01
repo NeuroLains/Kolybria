@@ -25,13 +25,38 @@ export default function Polygraphy() {
 
   const filteredPolygraphyProducts = products.filter(product => 
     polygraphyProductIds.includes(product.id)
-  ).map(product => ({
-    ...product,
-    to: `/product/${product.id}`,
-    image: product.image, // Ensure image is taken from product object
-    title: product.name || product.title, // Use product.name if available, else product.title
-    displayPrice: getFormattedPrice(product) // Use the formatter for price
-  }));
+  ).map(product => {
+    let queryParams = new URLSearchParams();
+    
+    // Добавляем базовые параметры в зависимости от типа товара
+    switch (product.id) {
+      case 1: // Визитки
+        queryParams.append('Тип бумаги и тираж', 'Картон 300 гр + лак');
+        queryParams.append('quantity_table', '1000');
+        break;
+      case 2: // Листовки
+        queryParams.append('Формат и тираж', 'Листовка (А6)');
+        queryParams.append('quantity_table', '1000');
+        break;
+      case 3: // Буклеты
+        queryParams.append('Формат и тираж', 'А4, 2 фальца (в три сложения)');
+        queryParams.append('quantity_table', '1000');
+        break;
+      case 4: // Блокноты
+        queryParams.append('Формат и тираж', 'А5');
+        queryParams.append('quantity_table', '100');
+        break;
+      // Добавьте другие случаи при необходимости
+    }
+
+    return {
+      ...product,
+      to: `/product/${product.id}${queryParams.toString() ? '?' + queryParams.toString() : ''}`,
+      image: product.image,
+      title: product.name || product.title,
+      displayPrice: getFormattedPrice(product)
+    };
+  });
 
   return (
     <div style={{ padding: '32px 0', textAlign: 'center' }}>

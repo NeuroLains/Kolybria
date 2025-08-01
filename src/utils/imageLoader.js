@@ -9,8 +9,13 @@ import imageMapping from '../../image_mapping.json';
 export const getMainImage = (productId) => {
   const mapping = imageMapping[productId];
   if (mapping && mapping.main) {
-    // Преобразуем путь из /src/assets/gallery/product_X/main.jpg в /gallery/product_X/main.jpg
-    return mapping.main.replace('/src/assets/gallery/', '/gallery/');
+    const path = mapping.main;
+    // Проверяем начало пути и возвращаем правильный путь
+    if (path.startsWith('/src/assets/gallery/')) {
+      return path.replace('/src/assets/gallery/', '/gallery/');
+    } else if (path.startsWith('/gallery/')) {
+      return path;
+    }
   }
   return null;
 };
@@ -23,8 +28,14 @@ export const getMainImage = (productId) => {
 export const getGalleryImages = (productId) => {
   const mapping = imageMapping[productId];
   if (mapping && mapping.gallery && mapping.gallery.length > 0) {
-    // Преобразуем пути из /src/assets/gallery/product_X/gallery_Y.jpg в /gallery/product_X/gallery_Y.jpg
-    return mapping.gallery.map(img => img.replace('/src/assets/gallery/', '/gallery/'));
+    return mapping.gallery.map(path => {
+      if (path.startsWith('/src/assets/gallery/')) {
+        return path.replace('/src/assets/gallery/', '/gallery/');
+      } else if (path.startsWith('/gallery/')) {
+        return path;
+      }
+      return path;
+    }).filter(Boolean); // Убираем возможные null значения
   }
   return [];
 };
@@ -53,8 +64,25 @@ export const getAllImages = (productId) => {
  * @returns {boolean} true если есть изображения
  */
 export const hasImages = (productId) => {
-  const mapping = imageMapping[productId];
-  return mapping && (mapping.main || (mapping.gallery && mapping.gallery.length > 0));
+  try {
+    const mapping = imageMapping[productId];
+    if (!mapping) {
+      console.warn(`No image mapping found for product ${productId}`);
+      return false;
+    }
+    
+    const hasMain = mapping.main && typeof mapping.main === 'string';
+    const hasGallery = mapping.gallery && Array.isArray(mapping.gallery) && mapping.gallery.length > 0;
+    
+    if (!hasMain && !hasGallery) {
+      console.warn(`No valid images found for product ${productId}`);
+    }
+    
+    return hasMain || hasGallery;
+  } catch (error) {
+    console.error(`Error checking images for product ${productId}:`, error);
+    return false;
+  }
 };
 
 /**

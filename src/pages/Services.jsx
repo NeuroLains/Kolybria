@@ -18,13 +18,50 @@ export default function Services() {
 
   const filteredServicesProducts = products.filter(product => 
     servicesProductIds.includes(product.id)
-  ).map(product => ({
-    ...product,
-    to: `/product/${product.id}`,
-    image: product.image,
-    title: product.name || product.title,
-    displayPrice: getFormattedPrice(product)
-  }));
+  ).map(product => {
+    let queryParams = new URLSearchParams();
+    
+    // Добавляем базовые параметры в зависимости от типа услуги
+    switch (product.id) {
+      case 42: // Дизайн
+        queryParams.append('Тип услуги', 'Логотип');
+        queryParams.append('Формат', 'Веб');
+        break;
+      case 43: // Широкоформатная печать
+        queryParams.append('Материал и формат', 'Баннер 440 гр');
+        queryParams.append('Размер', '1');
+        break;
+      case 44: // Печать чертежей
+        queryParams.append('Формат', 'А1');
+        queryParams.append('quantity_table', '1');
+        break;
+      case 45: // Ксерокопия
+        queryParams.append('Тип копирования', 'Черно-белое');
+        queryParams.append('Формат', 'А4');
+        queryParams.append('quantity_table', '100');
+        break;
+      case 46: // Твердый переплет
+        queryParams.append('Формат', 'А4');
+        queryParams.append('Количество листов', '100');
+        break;
+      case 47: // Изготовление печатей
+        queryParams.append('Тип', 'Круглая');
+        queryParams.append('Размер', '40');
+        break;
+      case 48: // Брендирование
+        queryParams.append('Тип услуги', 'Нанесение логотипа');
+        queryParams.append('Метод', 'Сублимация');
+        break;
+    }
+
+    return {
+      ...product,
+      to: `/product/${product.id}${queryParams.toString() ? '?' + queryParams.toString() : ''}`,
+      image: product.image,
+      title: product.name || product.title,
+      displayPrice: getFormattedPrice(product)
+    };
+  });
 
   return (
     <div style={{ padding: '32px 0', textAlign: 'center' }}>

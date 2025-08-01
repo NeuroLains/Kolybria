@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import BadgeIcon from '../assets/icons/badge.svg';
 import BadgeRoundIcon from '../assets/icons/badge-round.svg';
 import BadgeSquareIcon from '../assets/icons/badge-square.svg';
@@ -102,8 +103,17 @@ const badgeServices = [
 ];
 
 function Badges() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
+
+  useEffect(() => {
+    // Проверяем, что мы находимся на странице значков (ID 17)
+    if (id && id !== '17') {
+      navigate('/product/17');
+    }
+  }, [id, navigate]);
 
   const handleOrderClick = (service) => {
     setSelectedService(service);
